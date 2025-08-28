@@ -1,0 +1,70 @@
+{
+  "name": "Contact Getter",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "\n{\n\"query\": \n\"Mike Tyson\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        624,
+        96
+      ],
+      "id": "103559b2-74cd-4b40-b79b-2519101414a8",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "fields": [
+          "*"
+        ],
+        "useQuery": true,
+        "query": "={{ $json.query }}"
+      },
+      "type": "n8n-nodes-base.googleContacts",
+      "typeVersion": 1,
+      "position": [
+        848,
+        96
+      ],
+      "id": "8afcddd4-4a34-4f3a-ac87-3c6abfb6233f",
+      "name": "Get many contacts",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleContactsOAuth2Api": {
+          "id": "2rn9szZx9TCdz9uM",
+          "name": "Google Contacts account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get many contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fee962d1-49c9-4336-8306-cdbb950b175e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5b0e6a67cedc76556280fadf3adbc87df9618178e64ce10410dd16f182411baf"
+  },
+  "id": "zGYk0NFxirYxRiuM",
+  "tags": []
+}
