@@ -1,0 +1,102 @@
+{
+  "name": "Contact Creator",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"Given Name\": \"Demo\",\n  \"Family Name\": \"User\",\n  \"Email\": \"demo.user@gmail.com\",\n  \"Work Email\": \"demo.user@company.com\",\n  \"Birthday\": \"1990-01-01\",\n  \"Mobile Number\": \"+1234567890\",\n  \"Work Number\": \"+0987654321\",\n  \"Company Name\": \"Demo Company\",\n  \"Job Title\": \"CEO\",\n  \"LinkedIn\": \"https://linkedin.com/in/demo-user\",\n  \"Website\": \"https://demo-company.com\"\n}\n"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        80
+      ],
+      "id": "bdce0ec7-d5ab-427a-b1de-e0c774cb5681",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "familyName": "={{ $json['Family Name'] }}",
+        "givenName": "={{ $json['Given Name'] }}",
+        "additionalFields": {
+          "birthday": "={{ $json.Birthday }}",
+          "companyUi": {
+            "companyValues": [
+              {
+                "current": true,
+                "domain": "=",
+                "name": "={{ $json['Company Name'] }}",
+                "title": "={{ $json['Job Title'] }}"
+              }
+            ]
+          },
+          "emailsUi": {
+            "emailsValues": [
+              {
+                "type": "home",
+                "value": "={{ $json.Email }}"
+              },
+              {
+                "type": "work",
+                "value": "={{ $json['Work Email'] }}"
+              }
+            ]
+          },
+          "phoneUi": {
+            "phoneValues": [
+              {
+                "type": "mobile",
+                "value": "={{ $json['Mobile Number'] }}"
+              },
+              {
+                "type": "work",
+                "value": "={{ $json['Work Number'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleContacts",
+      "typeVersion": 1,
+      "position": [
+        784,
+        80
+      ],
+      "id": "708f60bc-64a6-4c81-baa6-f27a62036c7b",
+      "name": "Create a contact",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleContactsOAuth2Api": {
+          "id": "2rn9szZx9TCdz9uM",
+          "name": "Google Contacts account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Create a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ccf98ba1-fdad-4c80-a061-50bd533a534e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5b0e6a67cedc76556280fadf3adbc87df9618178e64ce10410dd16f182411baf"
+  },
+  "id": "0yzhJ2SI9J2d8ACX",
+  "tags": []
+}

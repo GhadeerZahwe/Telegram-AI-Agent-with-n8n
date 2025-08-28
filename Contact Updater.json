@@ -1,0 +1,141 @@
+{
+  "name": "Contact Updater",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"Contact ID\": \"demo1234567890\",\n  \"Given Name\": \"Demo\",\n  \"Family Name\": \"User\",\n  \"Email\": \"demo.user@gmail.com\",\n  \"Work Email\": \"demo.user@company.com\",\n  \"Birthday\": \"1990-01-01\",\n  \"Mobile Number\": \"+1234567890\",\n  \"Work Number\": \"+0987654321\",\n  \"Company Name\": \"Demo Company\",\n  \"Job Title\": \"CEO\",\n  \"LinkedIn\": \"https://linkedin.com/in/demo-user\",\n  \"Website\": \"https://demo-company.com\"\n}\n"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        80
+      ],
+      "id": "b68cec78-3d61-4672-a6d7-3c6bbefc2f81",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "contactId": "={{ $json['Contact ID'] }}",
+        "fields": [
+          "*"
+        ]
+      },
+      "type": "n8n-nodes-base.googleContacts",
+      "typeVersion": 1,
+      "position": [
+        800,
+        80
+      ],
+      "id": "7ce0152a-ee9a-4bd6-a616-0a4a99e1b2f3",
+      "name": "Get a contact",
+      "credentials": {
+        "googleContactsOAuth2Api": {
+          "id": "2rn9szZx9TCdz9uM",
+          "name": "Google Contacts account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "contactId": "={{ $('When Executed by Another Workflow').item.json['Contact ID'] }}",
+        "fields": [
+          "*"
+        ],
+        "updateFields": {
+          "familyName": "={{ $('When Executed by Another Workflow').item.json['Family Name'] }}",
+          "givenName": "={{ $('When Executed by Another Workflow').item.json['Given Name'] }}",
+          "birthday": "={{ $('When Executed by Another Workflow').item.json.Birthday }}",
+          "companyUi": {
+            "companyValues": [
+              {
+                "current": true,
+                "domain": "=",
+                "name": "={{ $('When Executed by Another Workflow').item.json['Company Name'] }}",
+                "title": "={{ $('When Executed by Another Workflow').item.json['Job Title'] }}"
+              }
+            ]
+          },
+          "emailsUi": {
+            "emailsValues": [
+              {
+                "type": "home",
+                "value": "={{ $('When Executed by Another Workflow').item.json.Email }}"
+              },
+              {
+                "type": "work",
+                "value": "={{ $('When Executed by Another Workflow').item.json['Work Email'] }}"
+              }
+            ]
+          },
+          "phoneUi": {
+            "phoneValues": [
+              {
+                "type": "mobile",
+                "value": "={{ $('When Executed by Another Workflow').item.json['Mobile Number'] }}"
+              },
+              {
+                "type": "work",
+                "value": "={{ $('When Executed by Another Workflow').item.json['Work Number'] }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleContacts",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        80
+      ],
+      "id": "3c6ad12c-392c-4a93-80d7-f3d8caeaac0f",
+      "name": "Update a contact",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleContactsOAuth2Api": {
+          "id": "2rn9szZx9TCdz9uM",
+          "name": "Google Contacts account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a contact": {
+      "main": [
+        [
+          {
+            "node": "Update a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c307991c-062c-481c-a981-15267ad7e2b4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5b0e6a67cedc76556280fadf3adbc87df9618178e64ce10410dd16f182411baf"
+  },
+  "id": "cD8GSiwOBcW9WyCS",
+  "tags": []
+}
