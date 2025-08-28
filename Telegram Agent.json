@@ -65,7 +65,6 @@
           "sendTo": "={{ $fromAI(\"emailAddress\") }}"
         }
       },
-      "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.1,
       "position": [
         1632,
